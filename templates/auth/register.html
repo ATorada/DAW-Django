@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+    <div class="content">
+        {% if error %}
+            <div class="error">
+                <span class="error">{{ error }}</span>
+            </div>
+        {% endif %}
+        <h1>Registrarse</h1>
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            <label for="name">Nombre</label>
+            <input type="text" name="name" id="name" value="{{ request.POST.name|default:'' }}">
+            {% if form.name.errors %}
+                <span class="error">{{ form.name.errors }}</span>
+            {% endif %}
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="{{ request.POST.email|default:'' }}">
+            {% if form.email.errors %}
+                <span class="error">{{ form.email.errors }}</span>
+            {% endif %}
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" id="password">
+            {% if form.password.errors %}
+                <span class="error">{{ form.password.errors }}</span>
+            {% endif %}
+            <label for="password_confirmation">Confirmar contraseña</label>
+            <input type="password" name="password_confirmation" id="password_confirmation">
+            <input class="boton" type="submit" name="enviar" value="Registrarse">
+        </form>
+    </div>
+{% endblock %}

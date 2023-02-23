@@ -1,0 +1,27 @@
+{% load static %}
+<nav>
+    <div class="logo">
+        <img src="{% static 'img/logo.svg' %}" alt="Logo">
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'users.index' %}">Miembros</a></li>
+            <li><a href="{% url 'events.index' %}">Eventos</a></li>
+            <li><a href="{% url 'messages.create' %}">Contacto</a></li>
+            <li><a href="{% url 'where' %}">Dónde estamos</a></li>
+            {% if user.is_authenticated and isAdmin %}
+            <li><a href="{% url 'events.create' %}">Crear evento</a></li>
+            <li><a href="{% url 'messages.index' %}">Mensajes</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li class="user"><a href="{% url 'users.show' user.id %}">Cuenta</a></li>
+                <li class="logout"><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% else %}
+                <li class="user"><a href="{% url 'login' %}">Iniciar sesión</a></li>
+                <li class="user"><a href="{% url 'register' %}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </div>
+  </nav>
+  

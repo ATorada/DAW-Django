@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block title %}Mensaje {{ message.id }}{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h1>Mensaje {{ message.id }}</h1>
+        <p>De: {{ message.name }} - {{ message.email }}</p>
+        <p>Asunto: {{ message.subject }}</p>
+        <p>Mensaje: {{ message.text }}</p>
+
+        <form action="{% url 'messages.destroy' message.id %}" method="POST">
+            {% csrf_token %}
+            <input class="botonRojo" type="submit" value="Eliminar">
+        </form>
+    </div>
+{% endblock %}

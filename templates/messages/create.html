@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+    <div class="content">
+        {% if success %}
+            <div class="success">
+                {{ success }}
+            </div>
+        {% endif %}
+        {% if messages %}
+            <div class="error">
+                {% for message in messages %}
+                    <div>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h1>Contacto</h1>
+        <form method="post" action="{% url 'messages.create' %}">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+                <input type="text" name="name" placeholder="Nombre..." value="{{ user.username }}">
+                <input type="email" name="email" placeholder="Email..." value="{{ user.email }}">
+            {% else %}
+                <input type="text" name="name" placeholder="Nombre..." value="{{ form.name.value }}">
+                <input type="email" name="email" placeholder="Email..." value="{{ form.email.value }}">
+            {% endif %}
+            <input type="text" name="subject" placeholder="Asunto..." value="{{ form.subject.value }}">
+            <textarea name="message" placeholder="Mensaje...">{{ form.message.value }}</textarea>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+{% endblock %}

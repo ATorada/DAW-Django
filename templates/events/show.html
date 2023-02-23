@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="success">
+            {% if success %}
+                {{ success }}
+            {% endif %}
+        </div>
+            <h1>{{ event.name }}</h1>
+
+            {% if event.date %}
+                <p>Fecha: {{ event.date }}</p>
+                {% if event.hour %}
+                    <p>Hora: {{ event.hour|date:'H:i' }}</p>
+                {% endif %}
+            {% else %}
+                <p>Fecha y hora: No especificadas</p>
+            {% endif %}
+
+            <p>Descripción: {{ event.description }}</p>
+            {% if event.location %}
+                <p>Lugar: {{ event.location }}</p>
+            {% else %}
+                <p>Lugar: No especificado</p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                {% if isAdmin %}
+                    <p>Visibilidad: {{ event.visibility }}</p>
+                {% endif %}
+            {% endif %}
+
+            {% if event.tags %}
+                <p>Etiquetas: {{ event.tags }}</p>
+            {% else %}
+                <p>Etiquetas: No especificadas</p>
+            {% endif %}
+
+            <div class="botones">
+            {% if user.is_authenticated %}
+                {% if is_joined %}
+                    <form action="{% url 'events.leave' event.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="botonRojo" value="Borrarse del evento">
+                    </form>
+                {% else %}
+                    <form action="{% url 'events.join' event.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="botonVerde" value="Unirse al evento">
+                    </form>
+                {% endif %}
+
+                {% if isAdmin %}
+                    <form action="{% url 'events.destroy' event.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="botonRojo" value="Eliminar evento">
+                    </form>
+                    <a class="boton" href="{% url 'events.edit' event.id %}">Editar evento</a>
+                {% endif %}
+            {% endif %}
+            </div>
+
+            <h2>Asistentes</h2>
+            <ul>
+                {% for user in users %}
+                    <li>
+                        <a class="destacado" href="{% url 'users.show' user.id_user %}">{{ user.name }}</a>
+                    </li>
+                {% empty %}
+                    <li>No hay asistentes</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+{% endblock %}

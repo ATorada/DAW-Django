@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}Mensajes{% endblock %}
+
+{% block content %}
+    <div class="content mensajes">
+        <div class="success">
+            {% if success %}
+                {{ success }}
+            {% endif %}
+        </div>
+        <h1>Mensajes</h1>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        {% if not message.readed %}
+                            <a href="{% url 'messages.show' message.id %}" class="destacado">
+                        {% else %}
+                            <a href="{% url 'messages.show' message.id %}">
+                        {% endif %}
+                            {{ message.name }} <br> {{ message.subject }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            No hay mensajes.
+        {% endif %}
+    </div>
+{% endblock %}

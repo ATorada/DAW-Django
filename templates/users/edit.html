@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block content %}
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    <span class="error">{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h1>Editar perfil</h1>
+        <form action="{% url 'users.edit' user_model.id_user %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="_method" value="PUT">
+            <label for="name">Nombre</label>
+            <input type="text" name="name" id="name" value="{{ user_model.name }}">
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" id="password">
+            <label for="password_confirmation">Confirmar contraseña</label>
+            <input type="password" name="password_confirmation" id="password_confirmation">
+            <label for="birthday">Fecha de nacimiento</label>
+            <input type="date" name="birthday" id="birthday" value="{{ user_model.birthday|date:"Y-m-d" }}">
+            <label for="twitch">Twitch</label>
+            {% if user_model.twitch %}
+                {% with twitch=user_model.twitch|cut:"https://www.twitch.tv/" %}
+                    <input type="text" name="twitch" id="twitch" value="{{ twitch }}">
+                {% endwith %}
+            {% else %}
+                <input type="text" name="twitch" id="twitch" value="">
+            {% endif %}
+            <label for="instagram">Instagram</label>
+            {% if user_model.instagram %}
+                {% with instagram=user_model.instagram|cut:"https://www.instagram.com/" %}
+                    <input type="text" name="instagram" id="instagram" value="{{ instagram }}">
+                {% endwith %}
+            {% else %}
+                <input type="text" name="instagram" id="instagram" value="">
+            {% endif %}
+            <label for="twitter">Twitter</label>
+            {% if user_model.twitter %}
+                {% with twitter=user_model.twitter|cut:"https://www.twitter.com/" %}
+                    <input type="text" name="twitter" id="twitter" value="{{ twitter }}">
+                {% endwith %}
+            {% else %}
+                <input type="text" name="twitter" id="twitter" value="">
+            {% endif %}
+            <input class="boton" type="submit" name="enviar" value="Actualizar perfil">
+        </form>
+    </div>
+{% endblock %}

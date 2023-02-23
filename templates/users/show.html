@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block content %}
+  <div class="content">
+    <div class="success">
+      {% if messages %}
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      {% endif %}
+    </div>
+    <h1>{{ user_model.name }}</h1>
+
+    {% if user_model.birthday %}
+      <p>Cumpleaños: {{ user_model.birthday }}</p>
+    {% endif %}
+
+    {% if user_model.twitch %}
+      <a class="redSocial" href="https://www.twitch.tv/{{ user_model.twitch }}">
+        <img src="{% static 'img/twitch.png' %}" alt="Twitch">
+      </a>
+    {% endif %}
+    {% if user_model.instagram %}
+      <a class="redSocial" href="https://www.instagram.com/{{ user_model.instagram }}/">
+        <img src="{% static 'img/instagram.png' %}" alt="Instagram">
+      </a>
+    {% endif %}
+    {% if user_model.twitter %}
+      <a class="redSocial" href="https://twitter.com/{{ user_model.twitter }}">
+        <img src="{% static 'img/twiter.png' %}" alt="Twitter">
+      </a>
+    {% endif %}
+      {% if user_model.id_user == user.id %}
+        <br>
+        <a class="boton" href="{% url 'users.edit' user.id %}">Editar perfil</a>
+      {% endif %}
+  </div>
+{% endblock %}

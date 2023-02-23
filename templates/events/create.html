@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}Crear evento{% endblock %}
+
+{% block content %}
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h1>Crear evento</h1>
+        <form method="POST" action="{% url 'events.create' %}">
+            {% csrf_token %}
+            
+            <label for="name">Nombre</label>
+            <input type="text" name="name" id="name" value="{{ form.name.value|default_if_none:'' }}">
+
+            <label for="description">Descripción</label>
+            <textarea name="description" id="description">{{ form.description.value|default_if_none:'' }}</textarea>
+
+            <label for="date">Fecha</label>
+            <input type="date" name="date" id="date" value="{{ form.date.value|default_if_none:'' }}">
+
+            <label for="hour">Hora</label>
+            <input type="time" name="hour" id="hour" value="{{ form.hour.value|default_if_none:'' }}">
+
+            <label for="location">Lugar</label>
+            <input type="text" name="location" id="location" value="{{ form.location.value|default_if_none:'' }}">
+
+            <label for="visibility">Visibilidad</label>
+            <select name="visibility" id="visibility">
+                <option value="1">Público</option>
+                <option value="0">Privado</option>
+            </select>
+
+            <label for="tags">Etiquetas</label>
+            <input type="text" name="tags" id="tags" value="{{ form.tags.value|default_if_none:'' }}">
+
+            <input class="boton" type="submit" value="Crear">
+        </form>
+    </div>
+{% endblock %}
